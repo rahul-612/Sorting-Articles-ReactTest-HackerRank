@@ -1,6 +1,7 @@
 import React from 'react';
 
-function Articles() {
+function Articles({articles}) {
+  console.log(articles)
 
     return (
         <div className="card w-50 mx-auto">
