@@ -6,17 +6,41 @@ import Articles from './components/Articles';
 
 const title = "Sorting Articles";
 
-function App({articles}) {
+const sortByUpvotes = (articles) => [...articles].sort(function (a, b) {
+    const keyA = a.upvotes;
+    const keyB = b.upvotes;
+    if (keyA < keyB) return 1;
+    if (keyA > keyB) return -1;
+    return 0;
+});
 
+const sortByLatestDate = (articles) => [...articles].sort(function (a, b) {
+    const keyA = new Date(a.date);
+    const keyB = new Date(b.date);
+    if (keyA < keyB) return 1;
+    if (keyA > keyB) return -1;
+    return 0;
+});
+
+function App({articles}) {
+ const [my_articles, sortArticles] = useState(sortByUpvotes(articles));
     return (
         <div className="App">
             <h8k-navbar header={title}></h8k-navbar>
             <div className="layout-row align-items-center justify-content-center my-20 navigation">
                 <label className="form-hint mb-0 text-uppercase font-weight-light">Sort By</label>
-                <button data-testid="most-upvoted-link" className="small">Most Upvoted</button>
-                <button data-testid="most-recent-link" className="small">Most Recent</button>
+                <button data-testid="most-upvoted-link" className="small"  onClick={
+                            () => sortArticles(
+                                sortByUpvotes(articles)
+                            )
+                        }>Most Upvoted</button>
+                <button data-testid="most-recent-link" className="small"onClick={
+                        () => sortArticles(
+                            sortByLatestDate(articles)
+                        )
+                    }>Most Recent</button>
             </div>
-            <Articles articles={articles}/>
+            <Articles articles={my_articles}/>
         </div>
     );
 
